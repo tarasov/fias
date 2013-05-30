@@ -1,0 +1,4 @@
+Django >= 1.5
+MySQL-python
+South
+django-tastypie
