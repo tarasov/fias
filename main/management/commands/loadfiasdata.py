@@ -38,7 +38,6 @@ class Command(BaseCommand):
         if xml_house:
             self.parse_house(xml_house)
 
-    # @transaction.commit_manually
     def parse_house(self, xml_path):
         House.objects.all().delete()
 
@@ -107,7 +106,5 @@ class Command(BaseCommand):
         xml.sax.parse(xml_path, EventHandler())
         db.commit()
         print u"### end commit"
-        #transaction.commit()
 
 
-#db.close()
