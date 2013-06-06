@@ -5,7 +5,7 @@ from tastypie.constants import ALL
 
 class AddrResource(ModelResource):
     class Meta:
-        queryset = AddrObj.objects.all()
+        queryset = AddrObj.objects.filter(livestatus=True)
         allowed_methods = ['get', ]
         filtering = {
             u'formalname': ALL,
