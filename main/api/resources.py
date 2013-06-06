@@ -9,7 +9,7 @@ class AddrResource(ModelResource):
         allowed_methods = ['get', ]
         filtering = {
             u'formalname': ALL,
-            u'aolevel': [u'exact'],
+            u'aolevel': [u'exact', u'in'],
             u'parentguid': [u'exact'],
             u'aoguid': [u'exact'],
         }
