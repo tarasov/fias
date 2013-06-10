@@ -12,6 +12,7 @@ class AddrResource(ModelResource):
             u'aolevel': [u'exact', u'in'],
             u'parentguid': [u'exact'],
             u'aoguid': [u'exact'],
+            u'centstatus': [u'exact'],
         }
         resource_name = u'addresses'
 
