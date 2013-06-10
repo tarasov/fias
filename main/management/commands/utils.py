@@ -13,8 +13,6 @@ def parse_fias(model, fields, xml_path):
         count = 0
 
         def startElement(self, name, attrs):
-
-            model.objects.all().delete()
             names = attrs.getNames()
             if names:
                 self.count += 1
@@ -26,6 +24,7 @@ def parse_fias(model, fields, xml_path):
                     transaction.commit()
                     print u'commit - {0}'.format(self.count)
 
+    model.objects.all().delete()
     xml.sax.parse(xml_path, FiasHandler())
     transaction.commit()
     print u"### end commit"
