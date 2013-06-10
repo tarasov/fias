@@ -49,7 +49,7 @@ class AddrObj(models.Model):
     formalname = models.CharField(max_length=120, verbose_name=u'Формализованное наименование', db_index=True)
     postalcode = models.CharField(max_length=6, verbose_name=u'Почтовый индекс', blank=True, null=True)
     shortname = models.CharField(max_length=10, verbose_name=u'Краткое наименование типа объекта')
-    okato = models.CharField(max_length=11, verbose_name=u'Код ОКАТО', blank=True, default=u'')
+    okato = models.CharField(max_length=11, verbose_name=u'Код ОКАТО', blank=True, null=True)
     centstatus = models.IntegerField(choices=CENTSTATUS_CHOICES, verbose_name=u'Статус центра', blank=True, null=True)
     aolevel = models.IntegerField(choices=AOLEVEL_CHOICES, verbose_name=u'Уровень адресного объекта', db_index=True)
     startdate = models.DateField(verbose_name=u'Начало действия записи')
