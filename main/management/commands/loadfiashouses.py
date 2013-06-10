@@ -6,7 +6,7 @@ import MySQLdb
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from main.models import *
+from main.models import House
 
 
 db = MySQLdb.connect(
@@ -40,6 +40,7 @@ class Command(BaseCommand):
 
     def parse_house(self, xml_path):
         House.objects.all().delete()
+        table = House._meta.db_table
 
         print u'Начинаем парсить House'
         print xml_path
@@ -52,7 +53,7 @@ class Command(BaseCommand):
                 names = attrs.getNames()
                 if names:
                     self.counter += 1
-                    sql = """INSERT INTO `main_house` (
+                    sql = """INSERT INTO `%(table)s` (
                         `houseid`,
                         `houseguid`,
                         `aoguid`,
@@ -83,6 +84,7 @@ class Command(BaseCommand):
                         '%(updatedate)s',
                         '%(enddate)s'
                     )""" % {
+                        'table': table,
                         'houseid': attrs.getValue('HOUSEID'),
                         'houseguid': attrs.getValue('HOUSEGUID'),
                         'aoguid': attrs._attrs.get('AOGUID'),

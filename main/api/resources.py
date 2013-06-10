@@ -5,13 +5,14 @@ from tastypie.constants import ALL
 
 class AddrResource(ModelResource):
     class Meta:
-        queryset = AddrObj.objects.all()
+        queryset = AddrObj.objects.filter(livestatus=True)
         allowed_methods = ['get', ]
         filtering = {
             u'formalname': ALL,
-            u'aolevel': [u'exact'],
+            u'aolevel': [u'exact', u'in'],
             u'parentguid': [u'exact'],
             u'aoguid': [u'exact'],
+            u'centstatus': [u'exact'],
         }
         resource_name = u'addresses'
 
