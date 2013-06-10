@@ -4,8 +4,9 @@ import os
 import xml.sax
 from django.db import transaction
 
+addresses = []
 
-@transaction.commit_manually
+
 def parse_fias(model, fields, xml_path):
     print u'Начинаем парсить {0}\n'.format(os.path.basename(xml_path))
 
@@ -13,18 +14,20 @@ def parse_fias(model, fields, xml_path):
         count = 0
 
         def startElement(self, name, attrs):
+            global addresses
             names = attrs.getNames()
             if names:
                 self.count += 1
                 data = dict((field, attrs._attrs.get(field.upper())) for field in fields)
 
-                model(**data).save()
+                addresses.append(model(**data))
 
                 if self.count % 2000 == 0:
-                    transaction.commit()
+                    model.objects.bulk_create(addresses)
                     print u'commit - {0}'.format(self.count)
+                    addresses = []
 
     model.objects.all().delete()
     xml.sax.parse(xml_path, FiasHandler())
-    transaction.commit()
+    model.objects.bulk_create(addresses)
     print u"### end commit"
