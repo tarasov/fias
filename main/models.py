@@ -26,6 +26,13 @@ STRSTATUS_CHOICES = (
     (3, u'литер'),
 )
 
+CENTSTATUS_CHOICES = (
+    (0, u'объект не является центром административно-территориального образования'),
+    (1, u'объект является центром района'),
+    (2, u'объект является центром (столицей) региона'),
+    (3, u'объект является одновременно и центром района и центром региона'),
+)
+
 
 class AddrObj(models.Model):
     u"""ADDROBJ (Object) содержит коды, наименования и типы адресообразующих элементов (регионы; округа;
@@ -42,6 +49,7 @@ class AddrObj(models.Model):
     formalname = models.CharField(max_length=120, verbose_name=u'Формализованное наименование', db_index=True)
     postalcode = models.CharField(max_length=6, verbose_name=u'Почтовый индекс', blank=True, null=True)
     shortname = models.CharField(max_length=10, verbose_name=u'Краткое наименование типа объекта')
+    centstatus = models.IntegerField(choices=CENTSTATUS_CHOICES, verbose_name=u'Статус центра')
     aolevel = models.IntegerField(choices=AOLEVEL_CHOICES, verbose_name=u'Уровень адресного объекта', db_index=True)
     startdate = models.DateField(verbose_name=u'Начало действия записи')
     updatedate = models.DateField(verbose_name=u'Дата внесения записи')
@@ -50,6 +58,7 @@ class AddrObj(models.Model):
 
     class Meta:
         verbose_name = u'Классификатор адресообразующих элементов'
+        db_table = u'fias_addrobj'
 
     def __unicode__(self):
         return u"%s %s" % (self.shortname, self.formalname)
