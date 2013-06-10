@@ -4,9 +4,10 @@ import os
 import xml.sax
 
 
+bulk_list = []
+
 def parse_fias(model, fields, xml_path):
-    print u'Начинаем парсить {0}\n{1}\n'.format(os.path.basename(xml_path), xml_path)
-    bulk_list = []
+    print u'Начинаем парсить {0}\n'.format(os.path.basename(xml_path))
 
     class FiasHandler(xml.sax.ContentHandler):
 
