@@ -20,10 +20,7 @@ def parse_fias(model, fields, xml_path):
             if names:
                 data = dict((field, attrs._attrs.get(field.upper())) for field in fields)
 
-                if data['aoid'] in self.aoids:
-                    print data
-
-                obj = model(data)
+                obj = model(**data)
                 bulk_list.append(obj)
                 if len(bulk_list) % 2500 == 0:
                     model.objects.bulk_create(bulk_list)
