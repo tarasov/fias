@@ -5,13 +5,13 @@ import xml.sax
 from django.db import transaction
 
 
+@transaction.commit_manually
 def parse_fias(model, fields, xml_path):
     print u'Начинаем парсить {0}\n'.format(os.path.basename(xml_path))
 
     class FiasHandler(xml.sax.ContentHandler):
         count = 0
 
-        @transaction.commit_manually
         def startElement(self, name, attrs):
 
             model.objects.all().delete()
