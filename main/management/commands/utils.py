@@ -25,7 +25,7 @@ def parse_fias(model, fields, xml_path):
                 obj = model(**data)
 
                 bulk_list.append(obj)
-                if len(bulk_list) % 2500 == 0:
+                if len(bulk_list) % 2000 == 0:
                     self.summa += len(bulk_list)
                     model.objects.bulk_create(bulk_list)
                     print u'commit - {0}'.format(self.summa)
