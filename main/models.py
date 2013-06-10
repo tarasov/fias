@@ -111,10 +111,11 @@ class House(models.Model):
 
     postalcode = models.CharField(max_length=6, verbose_name=u'Почтовый индекс', blank=True, null=True)
     housenum = models.CharField(max_length=20, verbose_name=u'Номер дома', blank=True, null=True, db_index=True)
-    eststatus = models.IntegerField(choices=ESTSTATUS_CHOICES, verbose_name=u'Признак владения')
-    strstatus = models.IntegerField(choices=STRSTATUS_CHOICES, verbose_name=u'Признак строения')
     buildnum = models.CharField(max_length=10, verbose_name=u'Номер корпуса', blank=True, null=True)
     strucnum = models.CharField(max_length=10, verbose_name=u'Номер строения', blank=True, null=True)
+    okato = models.CharField(max_length=11, verbose_name=u'Код ОКАТО', blank=True, null=True)
+    eststatus = models.IntegerField(choices=ESTSTATUS_CHOICES, verbose_name=u'Признак владения')
+    strstatus = models.IntegerField(choices=STRSTATUS_CHOICES, verbose_name=u'Признак строения')
 
     startdate = models.DateField(verbose_name=u'Начало действия записи')
     updatedate = models.DateField(verbose_name=u'Дата внесения записи')
