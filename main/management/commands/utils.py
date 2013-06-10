@@ -2,37 +2,30 @@
 
 import os
 import xml.sax
-
-
-bulk_list = []
+from django.db import transaction
 
 
 def parse_fias(model, fields, xml_path):
     print u'Начинаем парсить {0}\n'.format(os.path.basename(xml_path))
 
     class FiasHandler(xml.sax.ContentHandler):
-        aoids = []
-        summa = 0
+        count = 0
 
+        @transaction.commit_manually
         def startElement(self, name, attrs):
-            global bulk_list
 
             model.objects.all().delete()
             names = attrs.getNames()
             if names:
+                self.count += 1
                 data = dict((field, attrs._attrs.get(field.upper())) for field in fields)
 
-                obj = model(**data)
+                model(**data).save()
 
-                bulk_list.append(obj)
-                if len(bulk_list) % 2000 == 0:
-                    self.summa += len(bulk_list)
-                    model.objects.bulk_create(bulk_list)
-                    print u'commit - {0}'.format(self.summa)
-                    bulk_list = []
-
-                self.aoids.append(data['aoid'])
+                if self.count % 2000 == 0:
+                    transaction.commit()
+                    print u'commit - {0}'.format(self.count)
 
     xml.sax.parse(xml_path, FiasHandler())
-    model.objects.bulk_create(bulk_list)
+    transaction.commit()
     print u"### end commit"
