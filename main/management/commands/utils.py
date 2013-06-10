@@ -18,7 +18,8 @@ def parse_fias(model, fields, xml_path):
             names = attrs.getNames()
             if names:
                 data = dict((field, attrs._attrs.get(field.upper())) for field in fields)
-                print data
+                if 'enddat' in data.keys():
+                    print data
                 obj = model(data)
                 bulk_list.append(obj)
                 if len(bulk_list) % 2500 == 0:

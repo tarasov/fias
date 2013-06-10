@@ -1,23 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
-import xml.sax
-import MySQLdb
-
-from django.conf import settings
 from django.core.management.base import BaseCommand
+
 from main.management.commands.utils import parse_fias
-
 from main.models import AddrObj
-
-
-db = MySQLdb.connect(
-    host=settings.DATABASES['default']['HOST'],
-    user=settings.DATABASES['default']['USER'],
-    passwd=settings.DATABASES['default']['PASSWORD'],
-    db=settings.DATABASES['default']['NAME'],
-    charset='utf8'
-)
-cursor = db.cursor()
 
 
 class Command(BaseCommand):
