@@ -2,7 +2,7 @@
 
 import os
 import xml.sax
-from django.db import transaction
+from django.db import connection
 
 addresses = []
 
@@ -22,12 +22,26 @@ def parse_fias(model, fields, xml_path):
 
                 addresses.append(model(**data))
 
-                if self.count % 5000 == 0:
+                if self.count % 3500 == 0:
                     model.objects.bulk_create(addresses)
                     print u'commit - {0}'.format(self.count)
                     addresses = []
 
+    print u"### deleting data.."
     model.objects.all().delete()
+    print u"### deleted."
+    cursor = connection.cursor()
+    cursor.execute('ALTER TABLE `{0}` DISABLE KEYS;'.format(model._meta.db_table))
+    cursor.execute('SET FOREIGN_KEY_CHECKS = 0;')
+    cursor.execute('SET UNIQUE_CHECKS = 0;')
+    cursor.execute('SET AUTOCOMMIT = 0;')
+
+    print u"### inserting data.."
     xml.sax.parse(xml_path, FiasHandler())
+
     model.objects.bulk_create(addresses)
-    print u"### end commit"
+    cursor.execute('SET FOREIGN_KEY_CHECKS = 1;')
+    cursor.execute('SET UNIQUE_CHECKS = 1;')
+    cursor.execute('COMMIT;')
+    cursor.execute('ALTER TABLE `{0}` ENABLE KEYS;'.format(model._meta.db_table))
+    print u"### insert."
