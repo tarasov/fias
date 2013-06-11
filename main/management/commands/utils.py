@@ -31,7 +31,6 @@ def parse_fias(model, fields, xml_path):
     model.objects.all().delete()
     print u"### deleted."
     cursor = connection.cursor()
-    cursor.execute('ALTER TABLE `{0}` DISABLE KEYS;'.format(model._meta.db_table))
     cursor.execute('SET FOREIGN_KEY_CHECKS = 0;')
     cursor.execute('SET UNIQUE_CHECKS = 0;')
     cursor.execute('SET AUTOCOMMIT = 0;')
@@ -43,5 +42,4 @@ def parse_fias(model, fields, xml_path):
     cursor.execute('SET FOREIGN_KEY_CHECKS = 1;')
     cursor.execute('SET UNIQUE_CHECKS = 1;')
     cursor.execute('COMMIT;')
-    cursor.execute('ALTER TABLE `{0}` ENABLE KEYS;'.format(model._meta.db_table))
     print u"### insert."
