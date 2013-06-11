@@ -100,17 +100,15 @@ class House(models.Model):
         max_length=36,
         verbose_name=u'Глобальный уникальный идентификатор дома',
         blank=True, null=True,
-        db_index=True,
     )
     aoguid = models.CharField(
         max_length=36,
         verbose_name=u'Guid записи родительского объекта (улицы, города, населенного пункта и т.п.)',
         blank=True, null=True,
-        db_index=True,
     )
 
     postalcode = models.CharField(max_length=6, verbose_name=u'Почтовый индекс', blank=True, null=True)
-    housenum = models.CharField(max_length=20, verbose_name=u'Номер дома', blank=True, null=True, db_index=True)
+    housenum = models.CharField(max_length=20, verbose_name=u'Номер дома', blank=True, null=True)
     buildnum = models.CharField(max_length=10, verbose_name=u'Номер корпуса', blank=True, null=True)
     strucnum = models.CharField(max_length=10, verbose_name=u'Номер строения', blank=True, null=True)
     okato = models.CharField(max_length=11, verbose_name=u'Код ОКАТО', blank=True, null=True)
