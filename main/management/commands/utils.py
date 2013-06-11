@@ -22,7 +22,7 @@ def parse_fias(model, fields, xml_path):
 
                 addresses.append(model(**data))
 
-                if self.count % 2000 == 0:
+                if self.count % 5000 == 0:
                     model.objects.bulk_create(addresses)
                     print u'commit - {0}'.format(self.count)
                     addresses = []
