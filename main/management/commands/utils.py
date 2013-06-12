@@ -69,7 +69,7 @@ class ParserXml(object):
     def parse(self, fields):
         tree = ET.parse(self.xml_path)
         root = tree.getroot()
-        print root
+        print root.attrib
         for i, child in enumerate(root, 1):
             data = dict((field, child.attrib.get(field.upper())) for field in fields)
             self.addresses.append(self.model(**data))
