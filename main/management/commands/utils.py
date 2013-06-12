@@ -49,40 +49,41 @@ class ParserXml(object):
         self.REMOVED = '<removed-task>'
         self.entry_finder = {}
         self.addresses = []
+        self.count = 0
 
         t1 = threading.Thread(target=self.heap)
         t1.daemon = True
         t1.start()
 
-        # t2 = threading.Thread(target=self.heap)
-        # t2.daemon = True
-        # t2.start()
-        #
-        # t3 = threading.Thread(target=self.heap)
-        # t3.daemon = True
-        # t3.start()
+        t2 = threading.Thread(target=self.heap)
+        t2.daemon = True
+        t2.start()
 
-        logger = logging.getLogger('')
-        for handler in logger.handlers:
-            logger.removeHandler(handler)
+        t3 = threading.Thread(target=self.heap)
+        t3.daemon = True
+        t3.start()
 
     def parse(self, fields):
-        tree = ET.iterparse(self.xml_path)
-        root = tree.getroot()
-        print root.attrib
-        for i, child in enumerate(root, 1):
-            data = dict((field, child.attrib.get(field.upper())) for field in fields)
-            self.addresses.append(self.model(**data))
-            print i
-            if i % 500 == 0:
-                print u'commit - {0}'.format(i)
-                self.add_task((i, self.addresses))
-                self.addresses = []
+        context = ET.iterparse(self.xml_path, events=('start', 'end'))
+        context = iter(context)
+        event, root = context.next()
+
+        for event, elem in context:
+            if event == 'start':
+                self.count += 1
+                data = dict((field, elem.attrib.get(field.upper())) for field in fields)
+                self.addresses.append(self.model(**data))
+                if self.count % 5000 == 0:
+                    print u'commit - {0}'.format(self.count)
+                    self.add_task((self.count, self.addresses))
+                    self.addresses = []
+                # else:
+                #     root.clear()
+                #     self.is_stop = False
 
     def heap(self):
         time.sleep(5)
         while True:
-            print len(self.h)
             if self.h:
                 addresses = self.pop_task()
                 self.model.objects.bulk_create(addresses)
@@ -90,7 +91,7 @@ class ParserXml(object):
             else:
                 self.is_stop = False
 
-            time.sleep(3)
+            time.sleep(2)
 
     def pop_task(self):
         if self.h:
