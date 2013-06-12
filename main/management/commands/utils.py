@@ -72,7 +72,8 @@ class ParserXml(object):
         for i, child in enumerate(root, 1):
             data = dict((field, child.attrib.get(field.upper())) for field in fields)
             self.addresses.append(self.model(**data))
-            if i % 5000 == 0:
+            print i
+            if i % 500 == 0:
                 print u'commit - {0}'.format(i)
                 self.add_task((i, self.addresses))
                 self.addresses = []
