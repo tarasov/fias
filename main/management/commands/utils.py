@@ -74,20 +74,16 @@ class ParserXml(object):
                 data = dict((field, elem.attrib.get(field.upper())) for field in fields)
                 self.addresses.append(self.model(**data))
                 if self.count % 5000 == 0:
-                    print u'commit - {0}'.format(self.count)
                     self.add_task((self.count, self.addresses))
                     self.addresses = []
-                # else:
-                #     root.clear()
-                #     self.is_stop = False
 
     def heap(self):
         time.sleep(5)
         while True:
             if self.h:
-                addresses = self.pop_task()
+                count, addresses = self.pop_task()
                 self.model.objects.bulk_create(addresses)
-                print 'save bulk {0}'.format(len(addresses))
+                print 'save - {0}'.format(count)
             else:
                 self.is_stop = False
 
@@ -97,8 +93,7 @@ class ParserXml(object):
         if self.h:
             count, addresses = heapq.heappop(self.h)
             del self.entry_finder[count]
-            print 'pop task {0}'.format(count)
-            return addresses
+            return count, addresses
         else:
             self.is_stop = False
 
@@ -106,7 +101,6 @@ class ParserXml(object):
     def add_task(self, task):
         self.entry_finder[task[0]] = task
         heapq.heappush(self.h, task)
-        print 'push task {0}'.format(task[0])
 
 
 
