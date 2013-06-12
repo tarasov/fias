@@ -53,14 +53,13 @@ class ParserXml(object):
         t1.daemon = True
         t1.start()
 
-        t2 = threading.Thread(target=self.heap)
-        t2.daemon = True
-        t2.start()
-
-        t3 = threading.Thread(target=self.heap)
-        t3.daemon = True
-        t3.start()
-
+        # t2 = threading.Thread(target=self.heap)
+        # t2.daemon = True
+        # t2.start()
+        #
+        # t3 = threading.Thread(target=self.heap)
+        # t3.daemon = True
+        # t3.start()
 
         logger = logging.getLogger('')
         for handler in logger.handlers:
@@ -72,7 +71,7 @@ class ParserXml(object):
         for i, child in enumerate(root, 1):
             data = dict((field, child.attrib.get(field.upper())) for field in fields)
             self.addresses.append(self.model(**data))
-            if i % 8000 == 0:
+            if i % 5000 == 0:
                 print u'commit - {0}'.format(i)
                 self.add_task((i, self.addresses))
                 self.addresses = []
