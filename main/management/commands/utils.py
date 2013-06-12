@@ -1,11 +1,14 @@
 # coding: utf8
-from heapq import heappush
+import heapq
+from multiprocessing import heap
 import os
 import threading
 import xml.sax
+import xml.etree.ElementTree as ET
+import itertools
 from django.db import connection
-
-addresses = []
+import time
+import logging
 
 
 def parse_fias(model, fields, xml_path):
@@ -18,43 +21,89 @@ def parse_fias(model, fields, xml_path):
     cursor.execute('SET FOREIGN_KEY_CHECKS = 0;')
     cursor.execute('SET UNIQUE_CHECKS = 0;')
     cursor.execute('SET AUTOCOMMIT = 0;')
+    logger = logging.getLogger('')
+    for handler in logger.handlers:
+        logger.removeHandler(handler)
 
     print u"### inserting data.."
-    xml.sax.parse(xml_path, FiasHandler(fields=fields))
+    px = ParserXml(model, xml_path)
+    px.parse(fields)
 
-    model.objects.bulk_create(addresses)
+    while px.is_stop:
+        time.sleep(10)
+
+    model.objects.bulk_create(px.addresses)
     cursor.execute('SET FOREIGN_KEY_CHECKS = 1;')
     cursor.execute('SET UNIQUE_CHECKS = 1;')
     cursor.execute('COMMIT;')
     print u"### insert."
 
 
-class FiasHandler(xml.sax.ContentHandler):
-    def __init__(self, *args, **kwargs):
-        self.count = 0
-        self.fields = kwargs.get('fields')
-        self.model = kwargs.get('model')
+class ParserXml(object):
+    def __init__(self, model, xml_path):
+        self.xml_path = xml_path
+        self.model = model
         self.h = []
+        self.is_stop = True
+        self.REMOVED = '<removed-task>'
+        self.entry_finder = {}
+        self.addresses = []
+
         t1 = threading.Thread(target=self.heap)
         t1.daemon = True
         t1.start()
 
-        super(FiasHandler, self).__init__(*args, **kwargs)
+        t2 = threading.Thread(target=self.heap)
+        t2.daemon = True
+        t2.start()
 
-    def startElement(self, name, attrs):
-        global addresses
-        names = attrs.getNames()
-        if names:
-            self.count += 1
-            data = dict((field, attrs._attrs.get(field.upper())) for field in self.fields)
+        t3 = threading.Thread(target=self.heap)
+        t3.daemon = True
+        t3.start()
 
-            addresses.append(self.model(**data))
 
-            if self.count % 2500 == 0:
-                # self.model.objects.bulk_create(addresses)
-                print u'commit - {0}'.format(self.count)
-                heappush(self.h, (self.count, addresses))
-                addresses = []
+        logger = logging.getLogger('')
+        for handler in logger.handlers:
+            logger.removeHandler(handler)
+
+    def parse(self, fields):
+        tree = ET.parse(self.xml_path)
+        root = tree.getroot()
+        for i, child in enumerate(root, 1):
+            data = dict((field, child.attrib.get(field.upper())) for field in fields)
+            self.addresses.append(self.model(**data))
+            if i % 500 == 0:
+                print u'commit - {0}'.format(i)
+                self.add_task((i, self.addresses))
+                self.addresses = []
 
     def heap(self):
-        pass
+        time.sleep(5)
+        while True:
+            print len(self.h)
+            if self.h:
+                addresses = self.pop_task()
+                self.model.objects.bulk_create(addresses)
+                print 'save bulk {0}'.format(len(addresses))
+            else:
+                self.is_stop = False
+
+            time.sleep(3)
+
+    def pop_task(self):
+        if self.h:
+            count, addresses = heapq.heappop(self.h)
+            del self.entry_finder[count]
+            print 'pop task {0}'.format(count)
+            return addresses
+        else:
+            self.is_stop = False
+
+
+    def add_task(self, task):
+        self.entry_finder[task[0]] = task
+        heapq.heappush(self.h, task)
+        print 'push task {0}'.format(task[0])
+
+
+

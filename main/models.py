@@ -59,6 +59,7 @@ class AddrObj(models.Model):
 
     class Meta:
         verbose_name = u'Классификатор адресообразующих элементов'
+        db_table = u'addrs'
 
     def __unicode__(self):
         return u"%s %s" % (self.shortname, self.formalname)
@@ -118,3 +119,6 @@ class House(models.Model):
     startdate = models.DateField(verbose_name=u'Начало действия записи')
     updatedate = models.DateField(verbose_name=u'Дата внесения записи')
     enddate = models.DateField(verbose_name=u'Окончание действия записи')
+
+    class Meta:
+        db_table = u'houses'
