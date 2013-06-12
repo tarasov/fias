@@ -73,7 +73,8 @@ class ParserXml(object):
                 self.count += 1
                 data = dict((field, elem.attrib.get(field.upper())) for field in fields)
                 self.addresses.append(self.model(**data))
-                if self.count % 5000 == 0:
+                elem.clear()
+                if self.count % 10000 == 0:
                     self.add_task((self.count, self.addresses))
                     self.addresses = []
 
