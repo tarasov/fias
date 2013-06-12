@@ -67,7 +67,7 @@ class ParserXml(object):
             logger.removeHandler(handler)
 
     def parse(self, fields):
-        tree = ET.parse(self.xml_path)
+        tree = ET.iterparse(self.xml_path)
         root = tree.getroot()
         print root.attrib
         for i, child in enumerate(root, 1):
