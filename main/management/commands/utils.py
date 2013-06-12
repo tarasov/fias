@@ -27,6 +27,7 @@ def parse_fias(model, fields, xml_path):
 
     print u"### inserting data.."
     px = ParserXml(model, xml_path)
+    print 'aaaaaa'
     px.parse(fields)
 
     while px.is_stop:
