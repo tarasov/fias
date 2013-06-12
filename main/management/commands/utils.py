@@ -30,6 +30,7 @@ def parse_fias(model, fields, xml_path):
     px.parse(fields)
 
     while px.is_stop:
+        print px.is_stop
         time.sleep(10)
 
     model.objects.bulk_create(px.addresses)
