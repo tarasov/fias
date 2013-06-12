@@ -27,7 +27,6 @@ def parse_fias(model, fields, xml_path):
 
     print u"### inserting data.."
     px = ParserXml(model, xml_path)
-    print 'aaaaaa'
     px.parse(fields)
 
     while px.is_stop:
@@ -70,6 +69,7 @@ class ParserXml(object):
     def parse(self, fields):
         tree = ET.parse(self.xml_path)
         root = tree.getroot()
+        print root
         for i, child in enumerate(root, 1):
             data = dict((field, child.attrib.get(field.upper())) for field in fields)
             self.addresses.append(self.model(**data))
