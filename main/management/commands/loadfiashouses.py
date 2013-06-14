@@ -16,7 +16,6 @@ class Command(BaseCommand):
 
         xml_list = os.listdir(path)
         xml_house = None
-        print 'sss'
         for xml_file in xml_list:
             if 'HOUSE' in xml_file:
                 xml_house = os.path.join(path, xml_file)

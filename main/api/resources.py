@@ -13,6 +13,7 @@ class AddrResource(ModelResource):
             u'parentguid': [u'exact'],
             u'aoguid': [u'exact'],
             u'centstatus': [u'exact'],
+            u'postalcode': [u'exact'],
         }
         resource_name = u'addresses'
 
@@ -25,6 +26,7 @@ class HouseResource(ModelResource):
             u'formalname': ALL,
             u'aolevel': [u'exact'],
             u'aoguid': [u'exact'],
+            u'postalcode': [u'exact'],
         }
         resource_name = u'houses'
 

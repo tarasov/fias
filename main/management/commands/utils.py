@@ -1,11 +1,8 @@
 # coding: utf8
 import heapq
-from multiprocessing import heap
 import os
 import threading
-import xml.sax
 import xml.etree.ElementTree as ET
-import itertools
 from django.db import connection
 import time
 import logging
@@ -73,8 +70,8 @@ class ParserXml(object):
                 self.count += 1
                 data = dict((field, elem.attrib.get(field.upper())) for field in fields)
                 self.addresses.append(self.model(**data))
-                elem.clear()
-                if self.count % 10000 == 0:
+                root.clear()
+                if self.count % 4000 == 0:
                     self.add_task((self.count, self.addresses))
                     self.addresses = []
 
@@ -97,7 +94,6 @@ class ParserXml(object):
             return count, addresses
         else:
             self.is_stop = False
-
 
     def add_task(self, task):
         self.entry_finder[task[0]] = task

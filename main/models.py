@@ -59,7 +59,6 @@ class AddrObj(models.Model):
 
     class Meta:
         verbose_name = u'Классификатор адресообразующих элементов'
-        db_table = u'addrs'
 
     def __unicode__(self):
         return u"%s %s" % (self.shortname, self.formalname)
