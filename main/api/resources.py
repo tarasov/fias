@@ -1,11 +1,12 @@
+import datetime
 from tastypie.resources import ModelResource
-from main.models import AddrObj, House
 from tastypie.constants import ALL
+from main.models import AddrObj, House
 
 
 class AddrResource(ModelResource):
     class Meta:
-        queryset = AddrObj.objects.filter(livestatus=True)
+        queryset = AddrObj.objects.filter(livestatus=True, enddate__gte=datetime.date.today())
         allowed_methods = ['get', ]
         filtering = {
             u'formalname': ALL,
