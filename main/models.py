@@ -52,6 +52,7 @@ class AddrObj(models.Model):
     okato = models.CharField(max_length=11, verbose_name=u'Код ОКАТО', blank=True, null=True)
     centstatus = models.IntegerField(choices=CENTSTATUS_CHOICES, verbose_name=u'Статус центра', blank=True, null=True)
     aolevel = models.IntegerField(choices=AOLEVEL_CHOICES, verbose_name=u'Уровень адресного объекта', db_index=True)
+    children_count = models.IntegerField(verbose_name=u'Уровень адресного объекта', default=0)
     startdate = models.DateField(verbose_name=u'Начало действия записи')
     updatedate = models.DateField(verbose_name=u'Дата внесения записи')
     enddate = models.DateField(verbose_name=u'Окончание действия записи')
