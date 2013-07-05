@@ -57,6 +57,34 @@ class AddrObj(models.Model):
     updatedate = models.DateField(verbose_name=u'Дата внесения записи')
     enddate = models.DateField(verbose_name=u'Окончание действия записи')
     livestatus = models.BooleanField(verbose_name=u'Признак действующего адресного объекта')
+    ifnsfl = models.CharField(max_length=4, verbose_name=u'Код ИФНС ЮЛ')
+    terrifnsul = models.CharField(max_length=4, verbose_name=u'Код территориального участка ИФНС ЮЛ')
+    okato = models.CharField(max_length=11, verbose_name=u'ОКАТО')
+    oktmo = models.CharField(max_length=4, verbose_name=u'ОКТМО')
+    regioncode = models.CharField(max_length=2, verbose_name=u'Код региона')
+    autocode = models.CharField(max_length=1, verbose_name=u'Код автономии')
+    areacode = models.CharField(max_length=3, verbose_name=u'Код района')
+    citycode = models.CharField(max_length=3, verbose_name=u'Код города')
+    placecode = models.CharField(max_length=3, verbose_name=u'Код населенного пункта')
+    streetcode = models.CharField(max_length=4, verbose_name=u'Код улицы')
+    extrcode = models.CharField(max_length=4, verbose_name=u'Код дополнительного адресообразующего элемента')
+    sextcode = models.CharField(max_length=1,
+                                verbose_name=u'Код подчиненного дополнительного адресообразующего элемента')
+
+    previd = models.CharField(max_length=36,
+                              verbose_name=u'Идентификатор записи связывания с предыдушей исторической записью')
+    nextid = models.CharField(max_length=36,
+                              verbose_name=u'Идентификатор записи  связывания с последующей исторической записью')
+    code = models.CharField(max_length=17,
+                            verbose_name=u'Код адресного объекта одной строкой с признаком актуальности из КЛАДР 4.0')
+    plaincode = models.CharField(
+        max_length=15,
+        verbose_name=u'Код адресного объекта из КЛАДР 4.0 одной строкой без признака актуальности (последних двух цифр)'
+    )
+    actstatus = models.IntegerField(verbose_name=u'Статус актуальности адресного объекта ФИАС. ')
+    operstatus = models.IntegerField(verbose_name=u'Статус действия над записью – причина появления записи')
+    currstatus = models.IntegerField(verbose_name=u'Статус актуальности КЛАДР 4')
+
 
     class Meta:
         verbose_name = u'Классификатор адресообразующих элементов'
