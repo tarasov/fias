@@ -1,0 +1,9 @@
+*.pyc
+*.sql
+.idea/*
+._*
+migrations
+media/
+deploystatic/
+*.swp
+wsgi.py

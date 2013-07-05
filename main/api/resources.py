@@ -1,3 +1,4 @@
+import copy
 import datetime
 from tastypie.resources import ModelResource
 from tastypie.constants import ALL
@@ -17,6 +18,20 @@ class AddrResource(ModelResource):
             u'postalcode': [u'exact'],
         }
         resource_name = u'addresses'
+
+    def dehydrate(self, bundle):
+        addrs = AddrObj.objects.filter(parentguid=bundle.data['aoguid'], aolevel__in=[3, 4, 5, 6])
+        bundle.data['places_count'] = addrs.count()
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data_dict):
+        if isinstance(data_dict, dict):
+            if 'meta' in data_dict:
+                del data_dict['meta']
+                data_dict['addresses'] = copy.copy(data_dict['objects'])
+                del data_dict['objects']
+
+        return data_dict
 
 
 class HouseResource(ModelResource):
