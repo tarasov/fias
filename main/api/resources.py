@@ -7,7 +7,8 @@ from main.models import AddrObj, House
 
 class AddrResource(ModelResource):
     class Meta:
-        queryset = AddrObj.objects.filter(livestatus=True, enddate__gte=datetime.date.today())
+        # queryset = AddrObj.objects.filter(livestatus=True, enddate__gte=datetime.date.today(), )
+        queryset = AddrObj.objects.filter(livestatus=True, enddate__gte=datetime.date.today(), aolevel__in=[1, 2, 3, 4, 5, 6, 7])
         allowed_methods = ['get', ]
         filtering = {
             u'formalname': ALL,
@@ -20,8 +21,11 @@ class AddrResource(ModelResource):
         resource_name = u'addresses'
 
     def dehydrate(self, bundle):
-        addrs = AddrObj.objects.filter(parentguid=bundle.data['aoguid'], aolevel__in=[3, 4, 5, 6])
+        addresses = AddrObj.objects.filter(parentguid=bundle.data['aoguid'])
+        addrs = addresses.filter(aolevel__in=[3, 4, 5, 6])
+        streets = addresses.filter(aolevel__in=[7])
         bundle.data['places_count'] = addrs.count()
+        bundle.data['streets_count'] = streets.count()
         return bundle
 
     def alter_list_data_to_serialize(self, request, data_dict):
