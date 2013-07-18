@@ -49,7 +49,6 @@ class AddrObj(models.Model):
     formalname = models.CharField(max_length=120, verbose_name=u'Формализованное наименование', db_index=True)
     postalcode = models.CharField(max_length=6, verbose_name=u'Почтовый индекс', blank=True, null=True)
     shortname = models.CharField(max_length=10, verbose_name=u'Краткое наименование типа объекта')
-    okato = models.CharField(max_length=11, verbose_name=u'Код ОКАТО', blank=True, null=True)
     centstatus = models.IntegerField(choices=CENTSTATUS_CHOICES, verbose_name=u'Статус центра', blank=True, null=True)
     aolevel = models.IntegerField(choices=AOLEVEL_CHOICES, verbose_name=u'Уровень адресного объекта', db_index=True)
     children_count = models.IntegerField(verbose_name=u'Уровень адресного объекта', default=0)
@@ -59,7 +58,7 @@ class AddrObj(models.Model):
     livestatus = models.BooleanField(verbose_name=u'Признак действующего адресного объекта')
     ifnsfl = models.CharField(max_length=4, verbose_name=u'Код ИФНС ЮЛ')
     terrifnsul = models.CharField(max_length=4, verbose_name=u'Код территориального участка ИФНС ЮЛ')
-    okato = models.CharField(max_length=11, verbose_name=u'ОКАТО')
+    okato = models.CharField(max_length=11, verbose_name=u'Код ОКАТО', blank=True, null=True)
     oktmo = models.CharField(max_length=4, verbose_name=u'ОКТМО')
     regioncode = models.CharField(max_length=2, verbose_name=u'Код региона')
     autocode = models.CharField(max_length=1, verbose_name=u'Код автономии')
@@ -84,7 +83,6 @@ class AddrObj(models.Model):
     actstatus = models.IntegerField(verbose_name=u'Статус актуальности адресного объекта ФИАС. ')
     operstatus = models.IntegerField(verbose_name=u'Статус действия над записью – причина появления записи')
     currstatus = models.IntegerField(verbose_name=u'Статус актуальности КЛАДР 4')
-
 
     class Meta:
         verbose_name = u'Классификатор адресообразующих элементов'
