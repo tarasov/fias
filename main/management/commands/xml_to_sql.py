@@ -33,6 +33,7 @@ class Command(BaseCommand):
                 if i % 10000 == 0:
                     dump.write('{0} {1};\n'.format(query, ', '.join(insertes).encode('utf-8')))
                     insertes = []
+            dump.write('{0} {1};\n'.format(query, ', '.join(insertes).encode('utf-8')))
         except UnicodeEncodeError, e:
             print i
             print insert_fields.format(**fields)
