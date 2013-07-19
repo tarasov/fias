@@ -24,19 +24,19 @@ class Command(BaseCommand):
         insert_fields = u', '.join("'{{{0}}}'".format(field) for field in all_field_names)
         start = time.time()
         insertes = []
-        try:
-            for i, (event, item) in enumerate(ET.iterparse(xml_addrobj), 1):
-                fields = dict((attr, item.attrib.get(attr.upper())) for attr in all_field_names)
+        # try:
+        for i, (event, item) in enumerate(ET.iterparse(xml_addrobj), 1):
+            fields = dict((attr, item.attrib.get(attr.upper())) for attr in all_field_names)
 
-                insertes.append(u'({0})'.format(insert_fields.format(**fields)))
+            insertes.append(u'({0})'.format(insert_fields.format(**fields)))
 
-                if i % 10000 == 0:
-                    dump.write('{0} {1};\n'.format(query, ', '.join(insertes).encode('utf-8')))
-                    insertes = []
-            dump.write('{0} {1};\n'.format(query, ', '.join(insertes).encode('utf-8')))
-        except UnicodeEncodeError, e:
-            print i
-            print insert_fields.format(**fields)
-            print e
+            if i % 5000 == 0:
+                dump.write('{0} {1};\n'.format(query, ', '.join(insertes).encode('utf-8')))
+                insertes = []
+        dump.write('{0} {1};\n'.format(query, ', '.join(insertes).encode('utf-8')))
+        # except UnicodeEncodeError, e:
+        #     print i
+        #     print insert_fields.format(**fields)
+        #     print e
         print 'Time %.5fs ..' % (time.time() - start)
         dump.close()

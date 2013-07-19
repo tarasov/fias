@@ -2,13 +2,16 @@ import copy
 import datetime
 from tastypie.resources import ModelResource
 from tastypie.constants import ALL
-from main.models import AddrObj, House
+from main.models import AddrObj
 
 
 class AddrResource(ModelResource):
     class Meta:
-        # queryset = AddrObj.objects.filter(livestatus=True, enddate__gte=datetime.date.today(), )
-        queryset = AddrObj.objects.filter(livestatus=True, enddate__gte=datetime.date.today(), aolevel__in=[1, 2, 3, 4, 5, 6, 7])
+        queryset = AddrObj.objects.filter(
+            livestatus=True,
+            enddate__gte=datetime.date.today(),
+            aolevel__in=[1, 2, 3, 4, 5, 6, 7]
+        )
         allowed_methods = ['get', ]
         filtering = {
             u'formalname': ALL,
@@ -36,17 +39,3 @@ class AddrResource(ModelResource):
                 del data_dict['objects']
 
         return data_dict
-
-
-class HouseResource(ModelResource):
-    class Meta:
-        queryset = House.objects.all()
-        allowed_methods = ['get', ]
-        filtering = {
-            u'formalname': ALL,
-            u'aolevel': [u'exact'],
-            u'aoguid': [u'exact'],
-            u'postalcode': [u'exact'],
-        }
-        resource_name = u'houses'
-
