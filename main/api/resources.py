@@ -24,7 +24,11 @@ class AddrResource(ModelResource):
         resource_name = u'addresses'
 
     def dehydrate(self, bundle):
-        addresses = AddrObj.objects.filter(parentguid=bundle.data['aoguid'])
+        addresses = AddrObj.objects.filter(
+            parentguid=bundle.data['aoguid'],
+            livestatus=True,
+            enddate__gte=datetime.date.today(),
+        )
         addrs = addresses.filter(aolevel__in=[3, 4, 5, 6])
         streets = addresses.filter(aolevel__in=[7])
         bundle.data['number_of_places'] = addrs.count()
