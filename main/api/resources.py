@@ -27,8 +27,8 @@ class AddrResource(ModelResource):
         addresses = AddrObj.objects.filter(parentguid=bundle.data['aoguid'])
         addrs = addresses.filter(aolevel__in=[3, 4, 5, 6])
         streets = addresses.filter(aolevel__in=[7])
-        bundle.data['places_count'] = addrs.count()
-        bundle.data['streets_count'] = streets.count()
+        bundle.data['number_of_places'] = addrs.count()
+        bundle.data['number_of_streets'] = streets.count()
         return bundle
 
     def alter_list_data_to_serialize(self, request, data_dict):
