@@ -1,11 +1,18 @@
+# coding: utf-8
+from __future__ import unicode_literals
+
 import copy
 import datetime
-from tastypie.resources import ModelResource
+
+from tastypie import fields
 from tastypie.constants import ALL
+from tastypie.resources import ModelResource
+
 from main.models import AddrObj
 
 
 class AddrResource(ModelResource):
+
     class Meta:
         queryset = AddrObj.objects.filter(
             livestatus=True,

@@ -1,7 +1,9 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, patterns, url
+
 from .api.resources import AddrResource
 
 
-urlpatterns = patterns('',
-                       url('^api/', include(AddrResource().urls)),
-                       )
+urlpatterns = patterns(
+    '',
+    url('^api/', include(AddrResource().urls)),
+)
