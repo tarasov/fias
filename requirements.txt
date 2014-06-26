@@ -3,3 +3,4 @@ MySQL-python
 South
 django-tastypie==0.10.0
 simplejson
+mimeparse

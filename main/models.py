@@ -47,7 +47,7 @@ class AddrObj(models.Model):
     parentguid = models.CharField(max_length=36, verbose_name=u'Идентификатор объекта родительского объекта',
                                   blank=True, null=True, db_index=True)
     formalname = models.CharField(max_length=120, verbose_name=u'Формализованное наименование', db_index=True)
-    postalcode = models.CharField(max_length=6, verbose_name=u'Почтовый индекс', blank=True, null=True)
+    postalcode = models.CharField(max_length=6, verbose_name=u'Почтовый индекс', blank=True, null=True, db_index=True)
     shortname = models.CharField(max_length=10, verbose_name=u'Краткое наименование типа объекта')
     centstatus = models.IntegerField(choices=CENTSTATUS_CHOICES, verbose_name=u'Статус центра', blank=True, null=True)
     aolevel = models.IntegerField(choices=AOLEVEL_CHOICES, verbose_name=u'Уровень адресного объекта', db_index=True)
@@ -73,7 +73,7 @@ class AddrObj(models.Model):
     previd = models.CharField(max_length=36,
                               verbose_name=u'Идентификатор записи связывания с предыдушей исторической записью')
     nextid = models.CharField(max_length=36,
-                              verbose_name=u'Идентификатор записи  связывания с последующей исторической записью')
+                              verbose_name=u'Идентификатор записи связывания с последующей исторической записью')
     code = models.CharField(max_length=17,
                             verbose_name=u'Код адресного объекта одной строкой с признаком актуальности из КЛАДР 4.0')
     plaincode = models.CharField(

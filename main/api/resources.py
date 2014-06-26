@@ -27,6 +27,7 @@ class AddrResource(ModelResource):
             u'aoguid': [u'exact'],
             u'centstatus': [u'exact'],
             u'postalcode': [u'exact'],
+            u'code': [u'exact'],
         }
         resource_name = u'addresses'
 
