@@ -40,7 +40,7 @@ class AddressView(View):
 
         queryset = AddrObj.objects.filter(
             livestatus=True, enddate__gte=datetime.date.today(),
-        ).order_by('aolevel')
+        ).order_by('formalname', 'aolevel')
         result = []
 
         if 'aoguid__exact' in qs_filters:
@@ -58,7 +58,7 @@ class AddressView(View):
             q_obj = q_obj2 | Q(**qs_filters)
 
         addresses = queryset.filter(q_obj)
-        for address in addresses[:10]:
+        for address in addresses[:20]:
             address = model_to_dict(address)
             result.append(address)
             while True:
