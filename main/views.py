@@ -58,7 +58,7 @@ class AddressView(View):
             q_obj = q_obj2 | Q(**qs_filters)
 
         addresses = queryset.filter(q_obj)
-        for address in addresses[:30]:
+        for address in addresses[:50]:
             address = model_to_dict(address)
             result.append(address)
             while True:
