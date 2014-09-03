@@ -69,8 +69,10 @@ class ParserXml(object):
             if event == 'start':
                 self.count += 1
                 data = dict((field, elem.attrib.get(field.upper())) for field in fields)
+                data['livestatus'] = True if data.get('livestatus').strip() == '1' else False
                 self.addresses.append(self.model(**data))
                 root.clear()
+                elem.clear()
                 if self.count % 4000 == 0:
                     self.add_task((self.count, self.addresses))
                     self.addresses = []
