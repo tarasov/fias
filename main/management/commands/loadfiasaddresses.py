@@ -24,6 +24,8 @@ class Command(BaseCommand):
 
         if xml_addrobj:
             fields = ['aoid', 'aoguid', 'parentguid', 'formalname', 'postalcode', 'shortname', 'centstatus',
-                      'aolevel', 'livestatus', 'okato', 'startdate', 'updatedate', 'enddate']
+                      'aolevel', 'livestatus', 'okato', 'startdate', 'updatedate', 'enddate', 'actstatus',
+                      'operstatus', 'currstatus', 'plaincode', 'code', 'regioncode', 'areacode', 'autocode',
+                      'citycode', 'placecode', 'streetcode', 'extrcode', 'sextcode', 'ifnsfl', 'oktmo']
             parse_fias(AddrObj, fields, xml_addrobj)
 
